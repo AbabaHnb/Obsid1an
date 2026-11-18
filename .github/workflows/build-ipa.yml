@@ -18,10 +18,12 @@ jobs:
 
       - name: Select newest Xcode
         run: |
-          set -euo pipefail
-          latest=$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1)
-          echo "Using: $latest"
-          sudo xcode-select -s "$latest"
+          latest=$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -r | head -1)
+          if [ -n "$latest" ]; then
+            echo "Using: $latest"
+            sudo xcode-select -s "$latest" || true
+          fi
+          xcode-select -p
           xcodebuild -version
           xcodebuild -showsdks | grep -i iphoneos || true
 
