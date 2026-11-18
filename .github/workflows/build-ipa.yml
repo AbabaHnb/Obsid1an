@@ -7,7 +7,11 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-15, macos-15-arm64]
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
@@ -52,7 +56,7 @@ jobs:
       - name: Upload IPA
         uses: actions/upload-artifact@v4
         with:
-          name: Obsid1an-unsigned-ipa
+          name: ipa-${{ matrix.os }}
           path: Obsid1an-unsigned.ipa
           retention-days: 14
 
@@ -60,6 +64,6 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: build-log
+          name: log-${{ matrix.os }}
           path: ${{ runner.temp }}/build.log
           if-no-files-found: ignore
