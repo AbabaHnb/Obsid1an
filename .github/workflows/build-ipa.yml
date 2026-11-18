@@ -36,7 +36,7 @@ jobs:
             -target Obsid1an \
             -configuration Release \
             -sdk iphoneos \
-            -derivedDataPath "$RUNNER_TEMP/dd" \
+            CONFIGURATION_BUILD_DIR="$RUNNER_TEMP/out" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
@@ -46,7 +46,7 @@ jobs:
       - name: Package IPA
         run: |
           set -euo pipefail
-          APP="$RUNNER_TEMP/dd/Build/Products/Release-iphoneos/Obsid1an.app"
+          APP="$RUNNER_TEMP/out/Obsid1an.app"
           test -d "$APP"
           mkdir -p Payload
           cp -R "$APP" Payload/
